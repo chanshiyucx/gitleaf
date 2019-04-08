@@ -12,12 +12,8 @@
           <router-link to="friends">Friends</router-link>
           <router-link to="about">About</router-link>
         </nav>
-        <div class="posts-wrapper">
-          <h2>Recent post</h2>
-          <ul></ul>
-        </div>
+        <router-view />
       </div>
-      <!-- <router-view /> -->
     </main>
   </div>
 </template>
