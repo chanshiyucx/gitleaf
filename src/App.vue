@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Header />
-    <main class="content">
+    <div class="content">
       <Sidebar />
       <div class="body">
         <nav class="nav">
@@ -14,18 +14,39 @@
         </nav>
         <router-view />
       </div>
-    </main>
+    </div>
+    <Footer />
   </div>
 </template>
 
 <script>
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
+import Footer from '@/components/Footer'
+
 export default {
   name: 'App',
   components: {
     Header,
-    Sidebar
+    Sidebar,
+    Footer
+  },
+  created() {
+    this.init()
+  },
+  methods: {
+    // 初始化数据项
+    init() {
+      this.queryCategories()
+      this.queryTags()
+      this.queryFriends()
+    },
+    // 获取分类
+    async queryCategories() {},
+    // 获取标签
+    async queryTags() {},
+    // 获取友链
+    async queryFriends() {}
   }
 }
 </script>

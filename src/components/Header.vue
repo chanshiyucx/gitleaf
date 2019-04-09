@@ -1,5 +1,5 @@
 <template>
-  <header class="Header">
+  <header class="header">
     <div class="main">
       <div class="pull-left">
         <svg-icon class="icon-github" icon-class="github" />
@@ -19,7 +19,7 @@
 </template>
 
 <style lang="less" scoped>
-.Header {
+.header {
   font-size: 14px;
   background-color: #24292e;
   .main {
@@ -45,7 +45,6 @@
         justify-content: space-between;
         align-items: center;
         position: relative;
-
         margin-right: 16px;
         width: 300px;
         height: 28px;
