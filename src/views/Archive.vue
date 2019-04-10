@@ -25,17 +25,25 @@
         </div>
       </li>
     </ul>
+    <Pagination
+      :loading="loading"
+      :isDisabledPrev="isDisabledPrev"
+      :isDisabledNext="isDisabledNext"
+      @handleClick="queryPosts"
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import MarkDown from '@/components/MarkDown'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'Archive',
   components: {
-    MarkDown
+    MarkDown,
+    Pagination
   },
   computed: {
     ...mapGetters(['loading', 'archives']),

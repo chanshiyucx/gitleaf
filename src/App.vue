@@ -64,7 +64,7 @@ export default {
       this.$Progress.start()
       this.$router.beforeEach(async (to, from, next) => {
         this.$Progress.start()
-        console.log('to', to)
+        console.log('to', to, from)
         if (to.name === 'archives') {
           await this.$store.dispatch('queryArchives')
           next()
@@ -80,6 +80,13 @@ export default {
     init() {
       this.$store.dispatch('queryCategory')
       this.$store.dispatch('queryTag')
+
+      // 当前路由
+      console.log('this.$route', this.$route)
+      const route = this.$route
+      if (route.name === 'archives') {
+        this.$store.dispatch('queryArchives')
+      }
     }
   }
 }
@@ -114,13 +121,20 @@ export default {
           font-weight: 600;
           border-bottom-color: #e36209;
         }
+        &:hover {
+          border-bottom-color: #d1d5da;
+          color: #24292e;
+          text-decoration: none;
+          transition: 0.2s ease;
+        }
         .counter {
-          padding: 2px 5px;
-          border-radius: 20px;
-          color: #586069;
           display: inline-block;
+          padding: 2px 5px;
+          line-height: 1;
+          color: #586069;
           font-size: 12px;
           font-weight: 600;
+          border-radius: 20px;
           background-color: rgba(27, 31, 35, 0.08);
         }
       }
