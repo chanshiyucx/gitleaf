@@ -48,11 +48,11 @@ export default {
   computed: {
     ...mapGetters(['loading', 'archives']),
     isDisabledPrev() {
-      return this.archives.pageNum <= 1
+      return this.archives.page <= 1
     },
     isDisabledNext() {
       if (!this.archives.maxPage) return false
-      return this.archives.pageNum >= this.archives.maxPage
+      return this.archives.page >= this.archives.maxPage
     }
   },
   methods: {
@@ -60,7 +60,8 @@ export default {
     async queryPosts(type = 'next') {
       if (type === 'prev' && this.isDisabledPrev) return
       if (type === 'next' && this.isDisabledNext) return
-      this.$store.dispatch('queryPosts', { type })
+      await this.$store.dispatch('queryArchives', { type })
+      this.$scroll(0)
     }
   }
 }

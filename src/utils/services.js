@@ -5,7 +5,8 @@ const { blog, token, creator } = config
 const access_token = `access_token=${token.join('')}`
 const open = `creator=${creator}&state=open&${access_token}`
 const closed = `creator=${creator}&state=closed&${access_token}`
-const isDev = window.location.href.includes('localhost')
+// const isDev = window.location.href.includes('localhost')
+const isDev = false
 
 // 状态检测
 const checkStatus = response => {

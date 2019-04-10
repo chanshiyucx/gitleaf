@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import isMobile from 'ismobilejs'
+import AV from 'leancloud-storage'
 import VueProgressBar from 'vue-progressbar'
+import SmoothScroll from 'smooth-scroll'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -15,6 +17,26 @@ import './assets/icons'
 Vue.config.productionTip = false
 Vue.prototype.$config = config
 Vue.prototype.$isMobile = isMobile.phone
+
+// 滚动到锚点
+const scrollOpts = {
+  updateURL: false,
+  emitEvents: false,
+  durationMin: 1000,
+  durationMax: 1200,
+  easing: 'easeOutQuint'
+}
+const scroll = new SmoothScroll()
+Vue.prototype.$scroll = anchor => {
+  console.log('animateScroll')
+  scroll.animateScroll(anchor, scrollOpts)
+}
+
+// Register AV objects to the global
+window.AV = AV
+
+// Init Leancloud
+AV.init(config.leancloud)
 
 // 顶部进度条
 const options = {

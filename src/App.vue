@@ -19,7 +19,10 @@
             Tags
             <span class="counter">{{ tags.length }}</span>
           </router-link>
-          <router-link to="friends">Friends</router-link>
+          <router-link to="friends">
+            Friends
+            <span class="counter">{{ friend.length }}</span>
+          </router-link>
           <router-link to="about">About</router-link>
         </nav>
         <router-view />
@@ -42,8 +45,13 @@ export default {
     Sidebar,
     Footer
   },
+  data() {
+    return {
+      onLoad: false
+    }
+  },
   computed: {
-    ...mapGetters(['categories', 'tags'])
+    ...mapGetters(['categories', 'tags', 'friend'])
   },
   created() {
     if (!this.$isMobile) {
@@ -64,7 +72,6 @@ export default {
       this.$Progress.start()
       this.$router.beforeEach(async (to, from, next) => {
         this.$Progress.start()
-        console.log('to', to, from)
         if (to.name === 'archives') {
           await this.$store.dispatch('queryArchives')
           next()
@@ -74,19 +81,24 @@ export default {
       })
       this.$router.afterEach(() => {
         this.$Progress.finish()
+        if (!this.onLoad) {
+          this.onLoad = true
+          this.initPage()
+        }
       })
     },
-    // 初始化数据项
+    // 初始化全局数据
     init() {
+      this.$store.dispatch('queryRecentPost')
       this.$store.dispatch('queryCategory')
       this.$store.dispatch('queryTag')
-      this.$store.dispatch('queryPage', { type: 'friends' })
-
-      // 当前路由
-      console.log('this.$route', this.$route)
+      this.$store.dispatch('queryPage', { type: 'friend' })
+    },
+    // 初始化页面数据
+    async initPage() {
       const route = this.$route
       if (route.name === 'archives') {
-        this.$store.dispatch('queryArchives')
+        await this.$store.dispatch('queryArchives', { type: 'next' })
       }
     }
   }

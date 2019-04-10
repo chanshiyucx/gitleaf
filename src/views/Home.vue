@@ -2,22 +2,29 @@
   <div id="home">
     <h2>Recent post</h2>
     <ul>
-      <li v-for="item in posts" :key="item.id">
+      <li v-for="item in recentPost" :key="item.id">
         <div class="title">
           <svg-icon icon-class="repo" />
           <router-link :to="{ name: 'post', params: { number: item.number } }">{{ item.title }}</router-link>
         </div>
         <MarkDown class="markdown" :content="item.desc" :onlyRender="true" />
         <div class="footer">
-          <span> <svg-icon icon-class="calendar" /> {{ item.created_at }} </span>
           <span>
-            <svg-icon icon-class="inbox" /> {{ item.milestone ? item.milestone.title : '未分类' }}
+            <svg-icon icon-class="calendar" />
+            {{ item.created_at }}
+          </span>
+          <span>
+            <svg-icon icon-class="inbox" />
+            {{ item.milestone ? item.milestone.title : '未分类' }}
           </span>
           <span>
             <svg-icon icon-class="tag" />
             <span v-for="label in item.labels.slice(0, 2)" :key="label.id">{{ label.name }}</span>
           </span>
-          <span> <svg-icon icon-class="eye" />{{ item.times || 1 }}℃ </span>
+          <span>
+            <svg-icon icon-class="eye" />
+            {{ item.times || 1 }}℃
+          </span>
         </div>
       </li>
     </ul>
@@ -45,6 +52,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import MarkDown from '@/components/MarkDown'
 
 export default {
@@ -52,27 +60,8 @@ export default {
   components: {
     MarkDown
   },
-  data() {
-    return {
-      posts: []
-    }
-  },
-  created() {
-    this.queryPosts()
-  },
-  methods: {
-    // 获取文章列表
-    async queryPosts() {
-      const posts = await this.$store.dispatch('queryPosts', {
-        page: 1,
-        pageSize: 6
-      })
-      this.posts = posts
-      // 获取文章热度
-      this.$nextTick(async () => {
-        this.posts = await this.$store.dispatch('queryHot', { posts })
-      })
-    }
+  computed: {
+    ...mapGetters(['recentPost'])
   }
 }
 </script>
