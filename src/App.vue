@@ -80,6 +80,7 @@ export default {
     init() {
       this.$store.dispatch('queryCategory')
       this.$store.dispatch('queryTag')
+      this.$store.dispatch('queryPage', { type: 'friends' })
 
       // 当前路由
       console.log('this.$route', this.$route)

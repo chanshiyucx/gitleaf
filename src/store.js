@@ -8,15 +8,16 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     loading: false,
-    categories: [],
-    tags: [],
     archives: {
       pageSize: 30,
       pageNum: 0,
       maxPage: 0,
       posts: [],
       list: []
-    }
+    },
+    categories: [],
+    tags: [],
+    friends: []
   },
   mutations: {
     // 设置 loading 状态
@@ -37,6 +38,10 @@ export default new Vuex.Store({
     // 设置标签
     setTags(state, data) {
       state.tags = data
+    },
+    // 设置页面
+    setPage(state, { type, data }) {
+      state[type] = data
     }
   },
   actions: {
@@ -100,6 +105,12 @@ export default new Vuex.Store({
         o => o.name !== 'Mood' && o.name !== 'Friend' && o.name !== 'Book' && o.name !== 'About'
       )
       commit('setTags', data)
+    },
+    // 获取书单 & 友链 & 关于
+    async queryPage({ commit }, { type }) {
+      let data = await queryPage(type)
+      data = formatPage(data, type)
+      commit('setPage', { type, data })
     }
   },
   getters: {
