@@ -1,14 +1,24 @@
 <template>
   <div id="app">
+    <vue-progress-bar></vue-progress-bar>
     <Header />
     <div class="content">
       <Sidebar />
       <div class="body">
         <nav class="nav">
-          <router-link class="selected" to="/">Overview</router-link>
-          <router-link to="archives">Archives</router-link>
-          <router-link to="categories">Categories</router-link>
-          <router-link to="tags">Tags</router-link>
+          <router-link to="/">Overview</router-link>
+          <router-link to="archives">
+            Archives
+            <span class="counter">24</span>
+          </router-link>
+          <router-link to="categories">
+            Categories
+            <span class="counter">{{ categories.length }}</span>
+          </router-link>
+          <router-link to="tags">
+            Tags
+            <span class="counter">{{ tags.length }}</span>
+          </router-link>
           <router-link to="friends">Friends</router-link>
           <router-link to="about">About</router-link>
         </nav>
@@ -20,6 +30,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
 import Footer from '@/components/Footer'
@@ -31,22 +42,45 @@ export default {
     Sidebar,
     Footer
   },
+  computed: {
+    ...mapGetters(['categories', 'tags'])
+  },
   created() {
+    if (!this.$isMobile) {
+      // 顶部进度条
+      this.initProgress()
+    }
     this.init()
   },
+  mounted() {
+    if (!this.$isMobile) {
+      // 顶部进度条
+      this.$Progress.finish()
+    }
+  },
   methods: {
+    // 注册顶部进度条
+    initProgress() {
+      this.$Progress.start()
+      this.$router.beforeEach(async (to, from, next) => {
+        this.$Progress.start()
+        console.log('to', to)
+        if (to.name === 'archives') {
+          await this.$store.dispatch('queryArchives')
+          next()
+        } else {
+          next()
+        }
+      })
+      this.$router.afterEach(() => {
+        this.$Progress.finish()
+      })
+    },
     // 初始化数据项
     init() {
-      this.queryCategories()
-      this.queryTags()
-      this.queryFriends()
-    },
-    // 获取分类
-    async queryCategories() {},
-    // 获取标签
-    async queryTags() {},
-    // 获取友链
-    async queryFriends() {}
+      this.$store.dispatch('queryCategory')
+      this.$store.dispatch('queryTag')
+    }
   }
 }
 </script>
@@ -75,10 +109,19 @@ export default {
         font-size: 14px;
         border-bottom: 2px solid transparent;
         text-decoration: none;
-        &.selected {
+        &.router-link-exact-active {
           color: #24292e;
           font-weight: 600;
           border-bottom-color: #e36209;
+        }
+        .counter {
+          padding: 2px 5px;
+          border-radius: 20px;
+          color: #586069;
+          display: inline-block;
+          font-size: 12px;
+          font-weight: 600;
+          background-color: rgba(27, 31, 35, 0.08);
         }
       }
     }

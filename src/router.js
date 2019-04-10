@@ -10,22 +10,22 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/archives',
+      name: 'archives',
+      component: () => import('./views/Archive')
+    },
+    {
+      path: '/categories',
+      name: 'categories',
+      component: () => import('./views/Category')
+    },
+    {
+      path: '/tags',
+      name: 'tags',
+      component: () => import('./views/Tag')
     }
-    // {
-    //   path: '/archive',
-    //   name: 'archive',
-    //   component: () => import('./views/Archive')
-    // },
-    // {
-    //   path: '/category',
-    //   name: 'category',
-    //   component: () => import('./views/Category')
-    // },
-    // {
-    //   path: '/tag',
-    //   name: 'tag',
-    //   component: () => import('./views/Tag')
-    // },
     // {
     //   path: '/about',
     //   name: 'about',

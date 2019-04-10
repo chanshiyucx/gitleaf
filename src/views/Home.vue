@@ -7,9 +7,7 @@
           <svg-icon icon-class="repo" />
           <router-link :to="{ name: 'post', params: { number: item.number } }">{{ item.title }}</router-link>
         </div>
-        <p class="desc">
-          {{ item.desc }}
-        </p>
+        <MarkDown class="markdown" :content="item.desc" :onlyRender="true" />
         <div class="footer">
           <span> <svg-icon icon-class="calendar" /> {{ item.created_at }} </span>
           <span>
@@ -32,11 +30,11 @@
           <div class="contrib-legend">
             <span>Less</span>
             <ul class="legend">
-              <li class="legend-lable-1" style="background-color: #ebedf0"></li>
-              <li class="legend-lable-2" style="background-color: #c6e48b"></li>
-              <li class="legend-lable-3" style="background-color: #7bc96f"></li>
-              <li class="legend-lable-4" style="background-color: #239a3b"></li>
-              <li class="legend-lable-5" style="background-color: #196127"></li>
+              <li class="legend-lable-1"></li>
+              <li class="legend-lable-2"></li>
+              <li class="legend-lable-3"></li>
+              <li class="legend-lable-4"></li>
+              <li class="legend-lable-5"></li>
             </ul>
             <span>More</span>
           </div>
@@ -47,8 +45,13 @@
 </template>
 
 <script>
+import MarkDown from '@/components/MarkDown'
+
 export default {
   name: 'Home',
+  components: {
+    MarkDown
+  },
   data() {
     return {
       posts: []
@@ -108,7 +111,7 @@ export default {
           text-decoration: none;
         }
       }
-      .desc {
+      .markdown {
         margin: 12px 0 16px;
         overflow: hidden;
         text-overflow: ellipsis;
