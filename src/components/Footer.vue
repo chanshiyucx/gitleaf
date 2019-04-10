@@ -3,20 +3,26 @@
     <div class="wrapper">
       <ul>
         <li>© 2019 Chanshiyu.</li>
-        <li><a href="#">Home</a></li>
-        <li><a href="">Github</a></li>
-        <li><a href="">Zhihu</a></li>
+        <li>
+          <a href="#">Home</a>
+        </li>
+        <li>
+          <a href>Github</a>
+        </li>
+        <li>
+          <a href>Zhihu</a>
+        </li>
       </ul>
-      <a href="#"><svg-icon class="icon-github" icon-class="github"/></a>
-      <div>Theme Gitlife by Chanshiyu <span>❤</span> Powered by Github</div>
+      <a href="#">
+        <svg-icon class="icon-github" icon-class="github" />
+      </a>
+      <div>
+        Theme Gitlife by Chanshiyu
+        <span>❤</span> Powered by Github
+      </div>
     </div>
   </footer>
 </template>
-<script>
-export default {
-  name: 'Footer'
-}
-</script>
 
 <style lang="less" scoped>
 .footer {

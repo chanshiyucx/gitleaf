@@ -51,7 +51,7 @@ export default new Vuex.Store({
   },
   actions: {
     // 归档文章
-    async queryArchives({ state, dispatch, commit }, { type = 'next' }) {
+    async queryArchives({ state, dispatch, commit }, type = 'next') {
       const { pageSize, page, list } = state.archives
       const queryPage = type === 'prev' ? page - 1 : page + 1
       // 如果缓存列表里已存在

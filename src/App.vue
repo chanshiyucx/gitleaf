@@ -45,11 +45,6 @@ export default {
     Sidebar,
     Footer
   },
-  data() {
-    return {
-      onLoad: false
-    }
-  },
   computed: {
     ...mapGetters(['categories', 'tags', 'friend'])
   },
@@ -72,6 +67,7 @@ export default {
       this.$Progress.start()
       this.$router.beforeEach(async (to, from, next) => {
         this.$Progress.start()
+        console.log('beforeEach', to, from)
         if (to.name === 'archives') {
           await this.$store.dispatch('queryArchives')
           next()
@@ -79,11 +75,11 @@ export default {
           next()
         }
       })
-      this.$router.afterEach(() => {
+      this.$router.afterEach((to, from) => {
+        console.log('afterEach', to, from)
         this.$Progress.finish()
-        if (!this.onLoad) {
-          this.onLoad = true
-          this.initPage()
+        if (!from.name) {
+          this.initPage(to)
         }
       })
     },
@@ -95,10 +91,9 @@ export default {
       this.$store.dispatch('queryPage', { type: 'friend' })
     },
     // 初始化页面数据
-    async initPage() {
-      const route = this.$route
+    async initPage(route) {
       if (route.name === 'archives') {
-        await this.$store.dispatch('queryArchives', { type: 'next' })
+        await this.$store.dispatch('queryArchives')
       }
     }
   }

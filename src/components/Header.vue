@@ -7,16 +7,35 @@
           <input type="text" placeholder="Search or jump to..." />
           <svg-icon icon-class="slash" />
         </div>
-        <div class="nav">
-          <router-link to="archives">Archives</router-link>
-          <router-link to="categories">Categories</router-link>
-          <router-link to="tags">Tags</router-link>
+        <nav class="nav">
+          <a v-for="item in links" :key="item.name" :href="item.url" target="_blank">{{ item.name }}</a>
+        </nav>
+      </div>
+      <div class="pull-right">
+        <div class="btn-group">
+          <svg-icon class="icon-plus" icon-class="plus" />
+          <span class="dropdown-caret"></span>
+        </div>
+        <div class="details">
+          <img :src="personal.avatar" :alt="personal.username" />
+          <span class="dropdown-caret"></span>
         </div>
       </div>
-      <div class="pull-right"></div>
     </div>
   </header>
 </template>
+
+<script>
+export default {
+  name: 'Header',
+  data() {
+    return {
+      links: this.$config.links,
+      personal: this.$config.personal
+    }
+  }
+}
+</script>
 
 <style lang="less" scoped>
 .header {
@@ -68,10 +87,57 @@
       }
       .nav {
         a {
-          color: #fff;
           margin-right: 16px;
+          color: #fff;
+          font-weight: 600;
           text-decoration: none;
         }
+      }
+    }
+    .pull-right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 24px;
+      overflow: hidden;
+
+      .btn-group {
+        cursor: pointer;
+        margin-right: 16px;
+        color: #fff;
+        &:hover {
+          color: hsla(0, 0%, 100%, 0.7);
+        }
+        svg {
+          margin-right: 2px;
+          font-size: 17px;
+          transform: translateY(1px);
+        }
+      }
+
+      .details {
+        img {
+          margin-right: 4px;
+          display: inline-block;
+          border-radius: 3px;
+          line-height: 1;
+          width: 20px;
+          height: 20px;
+          overflow: hidden;
+          vertical-align: middle;
+        }
+      }
+      .dropdown-caret {
+        content: '';
+        display: inline-block;
+        width: 0;
+        height: 0;
+        vertical-align: middle;
+        border-bottom: 0 solid transparent;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top-style: solid;
+        border-top-width: 4px;
       }
     }
   }

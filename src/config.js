@@ -43,6 +43,32 @@ export default {
   },
 
   /**
+   * 顶部导航
+   */
+  links: [
+    {
+      name: 'Blog',
+      url: 'https://chanshiyu.com/'
+    },
+    {
+      name: 'Github',
+      url: 'https://github.com/chanshiyucx'
+    },
+    {
+      name: 'Aurora',
+      url: 'https://github.com/chanshiyucx/aurora'
+    },
+    {
+      name: 'HeartBeat',
+      url: 'https://github.com/chanshiyucx/heart-beat'
+    },
+    {
+      name: 'Gitlife',
+      url: 'https://github.com/chanshiyucx/gitlife'
+    }
+  ],
+
+  /**
    * 关于页面
    */
   personal: {

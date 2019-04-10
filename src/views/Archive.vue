@@ -58,9 +58,7 @@ export default {
   methods: {
     // 获取文章列表
     async queryPosts(type = 'next') {
-      if (type === 'prev' && this.isDisabledPrev) return
-      if (type === 'next' && this.isDisabledNext) return
-      await this.$store.dispatch('queryArchives', { type })
+      await this.$store.dispatch('queryArchives', type)
       this.$scroll(0)
     }
   }
