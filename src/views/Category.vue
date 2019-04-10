@@ -18,4 +18,18 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+#category {
+  margin-top: 24px;
+  ul,
+  li {
+    list-style: inherit;
+  }
+  ul {
+    padding-left: 30px;
+    li {
+      line-height: 1.7;
+    }
+  }
+}
+</style>
