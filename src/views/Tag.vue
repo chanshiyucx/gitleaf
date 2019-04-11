@@ -25,6 +25,7 @@ export default {
     flex-wrap: wrap;
     margin-top: 16px;
     li {
+      cursor: pointer;
       display: inline-block;
       margin: 0 8px 8px 0;
       padding: 5px 10px;

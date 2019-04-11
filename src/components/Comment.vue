@@ -52,11 +52,12 @@ export default {
     },
     // 加载 Valine
     renderValine() {
+      const { origin, hash } = window.location
       new Valine({
         el: '#valine',
         appId: this.$config.leancloud.appId,
         appKey: this.$config.leancloud.appKey,
-        path: window.location.href,
+        path: `${origin}/${hash}`,
         avatar: 'identicon',
         notify: false,
         placeholder: '蝉鸣如雨，花宵道中'
