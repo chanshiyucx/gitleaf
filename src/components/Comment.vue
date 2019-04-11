@@ -16,7 +16,9 @@ export default {
   name: 'Comment',
   props: ['title'],
   data() {
+    const { origin, hash } = window.location
     return {
+      path: `${origin}/${hash}`,
       anonymous: false,
       showModeBtn: false,
       tagName: this.$route.hash,
@@ -46,18 +48,18 @@ export default {
     renderGitalk() {
       const gitalk = new Gitalk({
         ...this.$config.gitalk,
+        id: this.path, // gitalk 唯一标识
         title: this.title
       })
       gitalk.render('gitalk')
     },
     // 加载 Valine
     renderValine() {
-      const { origin, hash } = window.location
       new Valine({
         el: '#valine',
         appId: this.$config.leancloud.appId,
         appKey: this.$config.leancloud.appKey,
-        path: `${origin}/${hash}`,
+        path: this.path, // valine 唯一标识
         avatar: 'identicon',
         notify: false,
         placeholder: '蝉鸣如雨，花宵道中'
