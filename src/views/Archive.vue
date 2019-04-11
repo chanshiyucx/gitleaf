@@ -46,13 +46,17 @@ export default {
     Pagination
   },
   computed: {
-    ...mapGetters(['loading', 'archives']),
+    ...mapGetters(['loading', 'archives', 'archivesCount']),
+    currentCount() {
+      let count = 0
+      this.archives.list.forEach(o => (count += o.length))
+      return count
+    },
     isDisabledPrev() {
       return this.archives.page <= 1
     },
     isDisabledNext() {
-      if (!this.archives.maxPage) return false
-      return this.archives.page >= this.archives.maxPage
+      return this.currentCount >= this.archivesCount
     }
   },
   methods: {

@@ -37,13 +37,17 @@ export default {
     Comment
   },
   computed: {
-    ...mapGetters(['loading', 'mood']),
+    ...mapGetters(['loading', 'mood', 'moodCount']),
+    currentCount() {
+      let count = 0
+      this.mood.list.forEach(o => (count += o.length))
+      return count
+    },
     isDisabledPrev() {
       return this.mood.page <= 1
     },
     isDisabledNext() {
-      if (!this.mood.maxPage) return false
-      return this.mood.page >= this.mood.maxPage
+      return this.currentCount >= this.moodCount
     }
   },
   methods: {

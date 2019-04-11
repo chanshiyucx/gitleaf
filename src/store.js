@@ -25,14 +25,12 @@ export default new Vuex.Store({
     archives: {
       pageSize: 20,
       page: 0,
-      maxPage: 0,
       posts: [],
       list: []
     },
     mood: {
       pageSize: 20,
       page: 0,
-      maxPage: 0,
       moods: [],
       list: []
     },
@@ -122,13 +120,7 @@ export default new Vuex.Store({
       })
       commit('setLoading', false)
 
-      if (posts.length === 0) {
-        return commit('setArchives', { maxPage: queryPage - 1 })
-      }
-      if (posts.length < state.archives.pageSize) {
-        commit('setArchives', { maxPage: queryPage })
-      }
-
+      if (posts.length === 0) return
       list[queryPage] = posts
       commit('setArchives', {
         page: queryPage,
@@ -164,12 +156,7 @@ export default new Vuex.Store({
       })
       commit('setLoading', false)
 
-      if (moods.length === 0) {
-        return commit('setMood', { maxPage: queryPage - 1 })
-      }
-      if (moods.length < state.mood.pageSize) {
-        commit('setMood', { maxPage: queryPage })
-      }
+      if (moods.length === 0) return
       moods = formatMood(moods)
       list[queryPage] = moods
       commit('setMood', {
