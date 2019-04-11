@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination">
+  <div :class="['pagination', hide && 'hide']">
     <div class="btn-group">
       <span :class="isDisabledPrev && 'disabled'" @click="handleClick('prev')">Previous</span>
       <span :class="isDisabledNext && 'disabled'" @click="handleClick('next')">Next</span>
@@ -11,6 +11,11 @@
 export default {
   name: 'Pagination',
   props: ['isDisabledPrev', 'isDisabledNext'],
+  computed: {
+    hide() {
+      return this.isDisabledPrev && this.isDisabledNext
+    }
+  },
   methods: {
     handleClick(type) {
       if (type === 'prev' && this.isDisabledPrev) return
@@ -26,6 +31,9 @@ export default {
   margin-bottom: 15px;
   margin-top: 20px;
   text-align: center;
+  &.hide {
+    display: none;
+  }
   .btn-group {
     span {
       cursor: pointer;

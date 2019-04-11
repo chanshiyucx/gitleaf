@@ -1,12 +1,17 @@
 import AV from 'leancloud-storage'
 import config from '../config'
+import documents from './documents'
 
-const { blog, token, creator } = config
-const access_token = `access_token=${token.join('')}`
-const open = `creator=${creator}&state=open&${access_token}`
-const closed = `creator=${creator}&state=closed&${access_token}`
-// const isDev = window.location.href.includes('localhost')
-const isDev = false
+const GRAPHQL_URL = 'https://api.github.com/graphql'
+const GITHUB_API = 'https://api.github.com/repos'
+
+const { username, repository, token } = config
+
+const blog = `${GITHUB_API}/${username}/${repository}`
+const access_token = token.join('')
+const open = `state=open&access_token=${access_token}`
+const closed = `state=closed&access_token=${access_token}`
+const isDev = window.location.href.includes('localhost')
 
 // 状态检测
 const checkStatus = response => {
@@ -15,6 +20,33 @@ const checkStatus = response => {
   error.response = response
   throw error
 }
+
+// 构建 GraphQL
+const createCall = async document => {
+  try {
+    const payload = JSON.stringify({ query: document })
+    const response = await fetch(GRAPHQL_URL, {
+      method: 'POST',
+      headers: {
+        Authorization: `token ${access_token}`
+      },
+      body: payload
+    })
+    checkStatus(response)
+    const body = await response.json()
+    return body.data
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+console.log('username, repository', username, repository)
+
+// 获取文章数量
+export const queryArchivesCount = () => createCall(documents.queryArchivesCount({ username, repository }))
+
+// 获取心情数量
+export const queryMoodCount = () => createCall(documents.queryMoodCount({ username, repository }))
 
 // 获取文章列表
 export const queryPosts = async ({ page = 1, pageSize = 10, filter = '' }) => {
@@ -45,7 +77,7 @@ export const queryPost = async number => {
 // 获取分类
 export const queryCategory = async () => {
   try {
-    const url = `${blog}/milestones?${access_token}`
+    const url = `${blog}/milestones?access_token=${access_token}`
     const response = await fetch(url)
     checkStatus(response)
     const data = await response.json()
@@ -58,7 +90,7 @@ export const queryCategory = async () => {
 // 获取标签
 export const queryTag = async () => {
   try {
-    const url = `${blog}/labels?${access_token}`
+    const url = `${blog}/labels?access_token=${access_token}`
     const response = await fetch(url)
     checkStatus(response)
     const data = await response.json()
@@ -143,41 +175,6 @@ export const queryHot = async (postList, isAdd) => {
     })
     Promise.all(seq)
       .then(data => resolve(data))
-      .catch(console.error)
-  }).catch(console.error)
-}
-
-// 喜欢小站
-export const likeSite = async type => {
-  return new Promise(resolve => {
-    const query = new AV.Query('Counter')
-    const Counter = AV.Object.extend('Counter')
-    query.equalTo('title', 'site')
-    query
-      .first()
-      .then(res => {
-        if (res) {
-          if (type === 'getTimes') {
-            resolve(res.get('time'))
-          } else {
-            res
-              .increment('time', 1)
-              .save(null, { fetchWhenSave: true })
-              .then(counter => resolve(counter.get('time')))
-              .catch(console.error)
-          }
-        } else {
-          // 不存在则新建
-          const newcounter = new Counter()
-          newcounter.set('title', 'site')
-          newcounter.set('time', 1)
-          newcounter.set('site', location.href)
-          newcounter
-            .save()
-            .then(counter => resolve(counter.get('time')))
-            .catch(console.error)
-        }
-      })
       .catch(console.error)
   }).catch(console.error)
 }

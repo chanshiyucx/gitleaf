@@ -27,6 +27,11 @@ export default new Router({
       component: () => import('./views/Tag')
     },
     {
+      path: '/mood',
+      name: 'mood',
+      component: () => import('./views/Mood')
+    },
+    {
       path: '/friends',
       name: 'friends',
       component: () => import('./views/Friend')

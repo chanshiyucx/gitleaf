@@ -1,15 +1,17 @@
 export default {
-  queryPostCount: ({ owner, name }) => `
+  queryArchivesCount: ({ username, repository }) => `
     query { 
-      repository(owner:"${owner}", name: "${name}") {
-        description
-        stargazers {
+      repository(owner:"${username}", name: "${repository}") {
+        issues(states:OPEN) {
           totalCount
         }
-        watchers {
-          totalCount
-        }
-        forks {
+      }
+    }
+  `,
+  queryMoodCount: ({ username, repository }) => `
+    query { 
+      repository(owner:"${username}", name: "${repository}") {
+        issues(states:CLOSED, labels: Mood) {
           totalCount
         }
       }

@@ -1,13 +1,27 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { queryPosts, queryPost, queryHot, queryCategory, queryTag, queryPage } from './utils/services'
-import { formatPost, formatPage } from './utils/format'
+import {
+  queryArchivesCount,
+  queryMoodCount,
+  queryPosts,
+  queryPost,
+  queryHot,
+  queryCategory,
+  queryTag,
+  queryMood,
+  queryPage,
+  visitor
+} from './utils/services'
+import { formatPost, formatMood, formatPage } from './utils/format'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     loading: false,
+    archivesCount: 0,
+    moodCount: 0,
+    post: {},
     archives: {
       pageSize: 20,
       page: 0,
@@ -15,7 +29,13 @@ export default new Vuex.Store({
       posts: [],
       list: []
     },
-    post: {},
+    mood: {
+      pageSize: 20,
+      page: 0,
+      maxPage: 0,
+      moods: [],
+      list: []
+    },
     recentPost: [],
     categories: [],
     tags: [],
@@ -26,6 +46,14 @@ export default new Vuex.Store({
     // 设置 loading 状态
     setLoading(state, loading) {
       state.loading = loading
+    },
+    // 设置文章数量
+    setArchivesCount(state, payload) {
+      state.archivesCount = payload
+    },
+    // 设置心情数量
+    setMoodCount(state, payload) {
+      state.moodCount = payload
     },
     // 设置归档
     setArchives(state, payload) {
@@ -50,12 +78,31 @@ export default new Vuex.Store({
     setTags(state, payload) {
       state.tags = payload
     },
+    // 设置心情
+    setMood(state, payload) {
+      state.mood = {
+        ...state.mood,
+        ...payload
+      }
+    },
     // 设置页面
     setPage(state, { type, data }) {
       state[type] = data
     }
   },
   actions: {
+    // 获取文章总数
+    async queryArchivesCount({ commit }) {
+      const data = await queryArchivesCount()
+      const count = data.repository.issues.totalCount
+      commit('setArchivesCount', count)
+    },
+    // 获取心情总数
+    async queryMoodCount({ commit }) {
+      const data = await queryMoodCount()
+      const count = data.repository.issues.totalCount
+      commit('setMoodCount', count)
+    },
     // 归档文章
     async queryArchives({ state, dispatch, commit }, { type }) {
       const { pageSize, page, list } = state.archives
@@ -98,6 +145,39 @@ export default new Vuex.Store({
       data.forEach(formatPost)
       return data
     },
+    // 获取心情列表
+    async queryMood({ state, commit }, { type }) {
+      const { pageSize, page, list } = state.mood
+      const queryPage = type === 'prev' ? page - 1 : page + 1
+      // 如果缓存列表里已存在
+      if (list[queryPage]) {
+        return commit('setMood', {
+          moods: list[queryPage],
+          page: queryPage
+        })
+      }
+
+      commit('setLoading', true)
+      let moods = await queryMood({
+        pageSize,
+        page: queryPage
+      })
+      commit('setLoading', false)
+
+      if (moods.length === 0) {
+        return commit('setMood', { maxPage: queryPage - 1 })
+      }
+      if (moods.length < state.mood.pageSize) {
+        commit('setMood', { maxPage: queryPage })
+      }
+      moods = formatMood(moods)
+      list[queryPage] = moods
+      commit('setMood', {
+        page: queryPage,
+        moods,
+        list
+      })
+    },
     // 获取文章详情
     async queryPost({ dispatch, commit }, { number }) {
       let post = await queryPost(number)
@@ -137,15 +217,22 @@ export default new Vuex.Store({
       let data = await queryPage(type)
       data = formatPage(data, type)
       commit('setPage', { type, data })
+    },
+    // 统计访问来源
+    async visitorStatistics(context, payload) {
+      await visitor(payload)
     }
   },
   getters: {
     loading: state => state.loading,
+    archivesCount: state => state.archivesCount,
+    moodCount: state => state.moodCount,
     archives: state => state.archives,
     recentPost: state => state.recentPost,
     post: state => state.post,
     categories: state => state.categories,
     tags: state => state.tags,
+    mood: state => state.mood,
     friend: state => state.friend,
     about: state => state.about
   }

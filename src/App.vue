@@ -9,7 +9,7 @@
           <router-link to="/">Overview</router-link>
           <router-link to="archives">
             Archives
-            <span class="counter">24</span>
+            <span class="counter">{{ archivesCount }}</span>
           </router-link>
           <router-link to="categories">
             Categories
@@ -18,6 +18,10 @@
           <router-link to="tags">
             Tags
             <span class="counter">{{ tags.length }}</span>
+          </router-link>
+          <router-link to="mood">
+            Mood
+            <span class="counter">{{ moodCount }}</span>
           </router-link>
           <router-link to="friends">
             Friends
@@ -37,6 +41,7 @@ import { mapGetters } from 'vuex'
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
 import Footer from '@/components/Footer'
+import { getLocation } from '@/utils'
 
 export default {
   name: 'App',
@@ -46,7 +51,7 @@ export default {
     Footer
   },
   computed: {
-    ...mapGetters(['categories', 'tags', 'friend']),
+    ...mapGetters(['archivesCount', 'moodCount', 'categories', 'tags', 'friend']),
     isPostPage() {
       return this.$route.name === 'post'
     }
@@ -88,16 +93,25 @@ export default {
       this.$store.dispatch('queryCategory')
       this.$store.dispatch('queryTag')
       this.$store.dispatch('queryPage', { type: 'friend' })
+      this.$store.dispatch('queryArchivesCount')
+      this.$store.dispatch('queryMoodCount')
+
+      // 统计访客来源
+      const referrer = getLocation(document.referrer)
+      const hostname = referrer.hostname || '直接访问'
+      this.$store.dispatch('visitorStatistics', hostname)
     },
     // 初始化页面数据
     async initPage(route) {
       if (route.name === 'archives') {
         await this.$store.dispatch('queryArchives', { type: 'next' })
+      } else if (route.name === 'mood') {
+        this.$store.dispatch('queryMood', { type: 'next' })
+      } else if (route.name === 'about') {
+        this.$store.dispatch('queryPage', { type: 'about' })
       } else if (route.name === 'post') {
         const number = route.params.number
         await this.$store.dispatch('queryPost', { number })
-      } else if (route.name === 'about') {
-        this.$store.dispatch('queryPage', { type: 'about' })
       }
     }
   }
