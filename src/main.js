@@ -29,7 +29,6 @@ const scrollOpts = {
 }
 const scroll = new SmoothScroll()
 Vue.prototype.$scroll = anchor => {
-  console.log('animateScroll')
   scroll.animateScroll(anchor, scrollOpts)
 }
 

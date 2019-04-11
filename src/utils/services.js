@@ -6,7 +6,6 @@ const GRAPHQL_URL = 'https://api.github.com/graphql'
 const GITHUB_API = 'https://api.github.com/repos'
 
 const { username, repository, token } = config
-
 const blog = `${GITHUB_API}/${username}/${repository}`
 const access_token = token.join('')
 const open = `state=open&access_token=${access_token}`
@@ -39,8 +38,6 @@ const createCall = async document => {
     console.log(err)
   }
 }
-
-console.log('username, repository', username, repository)
 
 // 获取文章数量
 export const queryArchivesCount = () => createCall(documents.queryArchivesCount({ username, repository }))

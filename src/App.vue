@@ -75,12 +75,10 @@ export default {
       this.$Progress.start()
       this.$router.beforeEach(async (to, from, next) => {
         this.$Progress.start()
-        console.log('beforeEach', to, from)
         await this.initPage(to)
         next()
       })
       this.$router.afterEach((to, from) => {
-        console.log('afterEach', to, from)
         this.$Progress.finish()
         if (!from.name) {
           this.initPage(to)
