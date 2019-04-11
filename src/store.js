@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { queryPosts, queryPost, queryHot, queryCategory, queryTag, queryPage } from './utils/services'
-import { formatPost, formatCategory, formatPage } from './utils/format'
+import { formatPost, formatPage } from './utils/format'
 
 Vue.use(Vuex)
 
@@ -19,7 +19,8 @@ export default new Vuex.Store({
     recentPost: [],
     categories: [],
     tags: [],
-    friend: []
+    friend: [],
+    about: {}
   },
   mutations: {
     // 设置 loading 状态
@@ -101,7 +102,6 @@ export default new Vuex.Store({
     async queryPost({ dispatch, commit }, { number }) {
       let post = await queryPost(number)
       post = formatPost(post)
-      console.log('post', post)
       let posts = await dispatch('queryHot', { posts: [post], isAdd: true })
       commit('setPost', posts[0])
     },
@@ -121,8 +121,7 @@ export default new Vuex.Store({
     },
     // 获取分类
     async queryCategory({ commit }) {
-      let data = await queryCategory()
-      data = formatCategory(data)
+      const data = await queryCategory()
       commit('setCategories', data)
     },
     // 获取标签
@@ -147,6 +146,7 @@ export default new Vuex.Store({
     post: state => state.post,
     categories: state => state.categories,
     tags: state => state.tags,
-    friend: state => state.friend
+    friend: state => state.friend,
+    about: state => state.about
   }
 })

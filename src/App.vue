@@ -96,6 +96,8 @@ export default {
       } else if (route.name === 'post') {
         const number = route.params.number
         await this.$store.dispatch('queryPost', { number })
+      } else if (route.name === 'about') {
+        this.$store.dispatch('queryPage', { type: 'about' })
       }
     }
   }

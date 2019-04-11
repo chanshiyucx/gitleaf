@@ -27,6 +27,16 @@ export default new Router({
       component: () => import('./views/Tag')
     },
     {
+      path: '/friends',
+      name: 'friends',
+      component: () => import('./views/Friend')
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: () => import('./views/About')
+    },
+    {
       path: '/post/:number',
       name: 'post',
       component: () => import('./views/Post.vue')

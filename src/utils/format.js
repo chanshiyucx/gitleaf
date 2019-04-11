@@ -19,18 +19,6 @@ export const formatPost = post => {
 }
 
 /**
- * 格式化分类
- */
-export const formatCategory = category => {
-  category.forEach(o => {
-    const desc = o.description.split('\r\n')
-    o.summary = desc[0].split('summary:')[1]
-    o.cover = desc[1].split('cover:')[1]
-  })
-  return category
-}
-
-/**
  * 格式化心情
  */
 export const formatMood = mood => {
@@ -43,8 +31,9 @@ export const formatMood = mood => {
  */
 export const formatPage = (data, type) => {
   if (!data.body) return
-  let section = data.body.split('## ').filter(o => o.length)
+  if (type === 'about') return data
 
+  let section = data.body.split('## ').filter(o => o.length)
   switch (type) {
     case 'book':
       section = section.map(o => {
@@ -72,17 +61,6 @@ export const formatPage = (data, type) => {
           avatar: content[3].split('avatar:')[1]
         }
       })
-      break
-    case 'about':
-      section = section.map(o => {
-        const title = o.match(/.+?\r\n/)[0]
-        return {
-          title,
-          content: o.slice(title.length)
-        }
-      })
-      break
-    default:
       break
   }
   return section

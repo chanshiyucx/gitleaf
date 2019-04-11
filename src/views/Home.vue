@@ -7,7 +7,7 @@
           <svg-icon icon-class="repo" />
           <router-link :to="{ name: 'post', params: { number: item.number } }">{{ item.title }}</router-link>
         </div>
-        <MarkDown class="markdown" :content="item.desc" />
+        <MarkDown :content="item.desc" />
         <div class="footer">
           <span>
             <svg-icon icon-class="calendar" />
@@ -100,9 +100,10 @@ export default {
           text-decoration: none;
         }
       }
-      .markdown {
+      /deep/.markdown-body {
         margin: 12px 0 16px;
         overflow: hidden;
+        font-size: 12px;
         text-overflow: ellipsis;
         display: -webkit-box;
         -webkit-line-clamp: 1;

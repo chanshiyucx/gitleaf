@@ -56,10 +56,11 @@
           <span>{{ post.user ? post.user.login : '' }}</span>
           <span>{{ post.created_at }}</span>
         </div>
-        <article class="markdown-body">
+        <article>
           <MarkDown :content="post.body" />
         </article>
       </div>
+      <Comment v-if="$config.comment.post" :title="post.title" />
     </main>
   </div>
 </template>
@@ -67,16 +68,17 @@
 <script>
 import { mapGetters } from 'vuex'
 import MarkDown from '@/components/MarkDown'
+import Comment from '@/components/Comment'
 import { localSave, localRead } from '@/utils'
 
 export default {
   name: 'Post',
   components: {
-    MarkDown
+    MarkDown,
+    Comment
   },
   data() {
     const star = localRead('star') ? JSON.parse(localRead('star')) : {}
-
     return {
       star
     }

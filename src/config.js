@@ -69,7 +69,7 @@ export default {
   ],
 
   /**
-   * 关于页面
+   * 个人信息页面
    */
   personal: {
     avatar: 'https://i.loli.net/2018/12/09/5c0cc2b4e0195.png',
@@ -79,5 +79,15 @@ export default {
     location: 'Shenzhen, China',
     email: 'me@chanshiyu.com',
     site: 'https://chanshiyu.com'
+  },
+
+  /**
+   * 评论功能是否启用
+   */
+  comment: {
+    post: true,
+    mood: true,
+    friend: true,
+    about: true
   }
 }
