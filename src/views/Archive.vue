@@ -58,7 +58,7 @@ export default {
   methods: {
     // 获取文章列表
     async queryPosts(type = 'next') {
-      await this.$store.dispatch('queryArchives', type)
+      await this.$store.dispatch('queryArchives', { type })
       this.$scroll(0)
     }
   }

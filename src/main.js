@@ -11,6 +11,7 @@ import config from './config'
 // 全局样式与字体图标
 import 'gitalk/dist/gitalk.css'
 import './assets/style/layout.less'
+import './assets/style/github-markdown.css'
 import './assets/icons'
 
 // 配置全局变量

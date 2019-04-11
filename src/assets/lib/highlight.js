@@ -13,11 +13,6 @@ import bash from 'highlight.js/lib/languages/bash'
 import json from 'highlight.js/lib/languages/json'
 import http from 'highlight.js/lib/languages/http'
 
-import linenumber from './linenumber'
-
-// 注册代码行数
-linenumber(hljs)
-
 // 按需导入高亮语种
 hljs.registerLanguage('javascript', javascript)
 hljs.registerLanguage('xml', xml)

@@ -2,10 +2,10 @@
   <div id="app">
     <vue-progress-bar></vue-progress-bar>
     <Header />
-    <div class="content">
-      <Sidebar />
+    <div :class="['content', !isPostPage && 'shrink-content']">
+      <Sidebar v-if="!isPostPage" />
       <div class="body">
-        <nav class="nav">
+        <nav v-if="!isPostPage" class="nav">
           <router-link to="/">Overview</router-link>
           <router-link to="archives">
             Archives
@@ -46,7 +46,10 @@ export default {
     Footer
   },
   computed: {
-    ...mapGetters(['categories', 'tags', 'friend'])
+    ...mapGetters(['categories', 'tags', 'friend']),
+    isPostPage() {
+      return this.$route.name === 'post'
+    }
   },
   created() {
     if (!this.$isMobile) {
@@ -68,12 +71,8 @@ export default {
       this.$router.beforeEach(async (to, from, next) => {
         this.$Progress.start()
         console.log('beforeEach', to, from)
-        if (to.name === 'archives') {
-          await this.$store.dispatch('queryArchives')
-          next()
-        } else {
-          next()
-        }
+        await this.initPage(to)
+        next()
       })
       this.$router.afterEach((to, from) => {
         console.log('afterEach', to, from)
@@ -93,7 +92,10 @@ export default {
     // 初始化页面数据
     async initPage(route) {
       if (route.name === 'archives') {
-        await this.$store.dispatch('queryArchives')
+        await this.$store.dispatch('queryArchives', { type: 'next' })
+      } else if (route.name === 'post') {
+        const number = route.params.number
+        await this.$store.dispatch('queryPost', { number })
       }
     }
   }
@@ -102,16 +104,21 @@ export default {
 <style lang="less" scoped>
 #app {
   .content {
-    margin: 24px auto;
-    padding: 0 16px;
-    max-width: 1012px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    &.shrink-content {
+      margin: 24px auto;
+      padding: 0 16px;
+      max-width: 1012px;
+      .body {
+        padding-left: 8px;
+      }
+    }
   }
   .body {
     flex: 1;
-    padding-left: 8px;
     .nav {
       display: flex;
       justify-content: flex-start;

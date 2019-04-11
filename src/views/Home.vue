@@ -7,7 +7,7 @@
           <svg-icon icon-class="repo" />
           <router-link :to="{ name: 'post', params: { number: item.number } }">{{ item.title }}</router-link>
         </div>
-        <MarkDown class="markdown" :content="item.desc" :onlyRender="true" />
+        <MarkDown class="markdown" :content="item.desc" />
         <div class="footer">
           <span>
             <svg-icon icon-class="calendar" />

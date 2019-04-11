@@ -2,7 +2,9 @@
   <header class="header">
     <div class="main">
       <div class="pull-left">
-        <svg-icon class="icon-github" icon-class="github" />
+        <a class="home-link" href="/">
+          <svg-icon icon-class="github" />
+        </a>
         <div class="search">
           <input type="text" placeholder="Search or jump to..." />
           <svg-icon icon-class="slash" />
@@ -46,6 +48,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin: 0 auto;
+    padding: 0 16px;
     max-width: 1012px;
     height: 64px;
     line-height: 64px;
@@ -54,9 +57,11 @@ export default {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      .icon-github {
+      .home-link {
         margin-right: 16px;
         font-size: 32px;
+        color: #fff;
+        transform: translateY(-2px);
       }
 
       .search {

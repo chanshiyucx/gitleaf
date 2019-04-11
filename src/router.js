@@ -25,11 +25,11 @@ export default new Router({
       path: '/tags',
       name: 'tags',
       component: () => import('./views/Tag')
+    },
+    {
+      path: '/post/:number',
+      name: 'post',
+      component: () => import('./views/Post.vue')
     }
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    // }
   ]
 })

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { queryPosts, queryHot, queryCategory, queryTag, queryPage } from './utils/services'
+import { queryPosts, queryPost, queryHot, queryCategory, queryTag, queryPage } from './utils/services'
 import { formatPost, formatCategory, formatPage } from './utils/format'
 
 Vue.use(Vuex)
@@ -15,6 +15,7 @@ export default new Vuex.Store({
       posts: [],
       list: []
     },
+    post: {},
     recentPost: [],
     categories: [],
     tags: [],
@@ -26,23 +27,27 @@ export default new Vuex.Store({
       state.loading = loading
     },
     // 设置归档
-    setArchives(state, data) {
+    setArchives(state, payload) {
       state.archives = {
         ...state.archives,
-        ...data
+        ...payload
       }
     },
     // 设置近期文章
-    setRecentPost(state, data) {
-      state.recentPost = data
+    setRecentPost(state, payload) {
+      state.recentPost = payload
+    },
+    // 设置当前文章
+    setPost(state, payload) {
+      state.post = payload
     },
     // 设置分类
-    setCategories(state, data) {
-      state.categories = data
+    setCategories(state, payload) {
+      state.categories = payload
     },
     // 设置标签
-    setTags(state, data) {
-      state.tags = data
+    setTags(state, payload) {
+      state.tags = payload
     },
     // 设置页面
     setPage(state, { type, data }) {
@@ -51,7 +56,7 @@ export default new Vuex.Store({
   },
   actions: {
     // 归档文章
-    async queryArchives({ state, dispatch, commit }, type = 'next') {
+    async queryArchives({ state, dispatch, commit }, { type }) {
       const { pageSize, page, list } = state.archives
       const queryPage = type === 'prev' ? page - 1 : page + 1
       // 如果缓存列表里已存在
@@ -92,6 +97,14 @@ export default new Vuex.Store({
       data.forEach(formatPost)
       return data
     },
+    // 获取文章详情
+    async queryPost({ dispatch, commit }, { number }) {
+      let post = await queryPost(number)
+      post = formatPost(post)
+      console.log('post', post)
+      let posts = await dispatch('queryHot', { posts: [post], isAdd: true })
+      commit('setPost', posts[0])
+    },
     // 获取文章热度
     async queryHot(context, { posts, isAdd = false }) {
       return await queryHot(posts, isAdd)
@@ -131,6 +144,7 @@ export default new Vuex.Store({
     loading: state => state.loading,
     archives: state => state.archives,
     recentPost: state => state.recentPost,
+    post: state => state.post,
     categories: state => state.categories,
     tags: state => state.tags,
     friend: state => state.friend
