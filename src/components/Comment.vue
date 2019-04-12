@@ -46,6 +46,7 @@ export default {
     },
     // 加载 Gitalk
     renderGitalk() {
+      console.log('renderGitalk path', this.path, this.$config.gitalk, this.title)
       const gitalk = new Gitalk({
         ...this.$config.gitalk,
         id: this.path, // gitalk 唯一标识
@@ -103,9 +104,10 @@ export default {
     border: 1px solid #77aeee;
     border-radius: 3px;
     background-color: #fff;
+    transition: all 0.2s ease-in-out;
     &:hover {
-      background-color: #e6ebf1;
-      background-image: linear-gradient(-180deg, #f0f3f6, #e6ebf1 90%);
+      color: #fff;
+      background-color: #77aeee;
       background-position: -0.5em;
       border-color: rgba(27, 31, 35, 0.35);
     }

@@ -59,13 +59,8 @@ export default new Vuex.Store({
     },
     // 筛选文章数量
     setFilterArchivesCount(state, payload) {
+      state.commit('resetFilterArchives')
       state.filterArchivesCount = payload
-      state.filterArchives = {
-        ...state.filterArchives,
-        page: 0,
-        posts: [],
-        list: []
-      }
     },
     // 设置心情数量
     setMoodCount(state, payload) {
@@ -78,11 +73,23 @@ export default new Vuex.Store({
         ...payload
       }
     },
+    resetArchives(state) {
+      state.archives.page = 0
+    },
     // 分类 & 标签筛选文章
     setFilterArchives(state, payload) {
       state.filterArchives = {
         ...state.filterArchives,
         ...payload
+      }
+    },
+    resetFilterArchives(state) {
+      state.filterArchivesCount = 0
+      state.filterArchives = {
+        pageSize: 20,
+        page: 0,
+        posts: [],
+        list: []
       }
     },
     // 设置近期文章
@@ -107,6 +114,9 @@ export default new Vuex.Store({
         ...state.mood,
         ...payload
       }
+    },
+    resetMood(state) {
+      state.mood.page = 0
     },
     // 设置页面
     setPage(state, { type, data }) {
@@ -192,8 +202,6 @@ export default new Vuex.Store({
         posts,
         list
       })
-
-      console.log('posts', posts)
 
       posts = await dispatch('queryHot', { posts })
       commit('setFilterArchives', { posts })

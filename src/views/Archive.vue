@@ -45,6 +45,9 @@ export default {
       await this.$store.dispatch('queryArchives', { type })
       this.$scroll(0)
     }
+  },
+  beforeDestroy() {
+    this.$store.commit('resetArchives')
   }
 }
 </script>

@@ -1,18 +1,19 @@
 <template>
   <div id="tag">
-    <ul class="tags">
+    <div v-if="filterArchives.posts.length">
+      <ArchiveList :archives="filterArchives.posts" />
+      <Pagination
+        :loading="loading"
+        :isDisabledPrev="isDisabledPrev"
+        :isDisabledNext="isDisabledNext"
+        @handleClick="queryPosts"
+      />
+    </div>
+    <ul v-else class="tags">
       <li v-for="item in tags" :key="item.id" @click="handleFilter(item.name)">
         <span>{{ item.name }}</span>
       </li>
     </ul>
-    <ArchiveList :archives="filterArchives.posts" />
-    <Pagination
-      v-if="filterArchives.posts.length"
-      :loading="loading"
-      :isDisabledPrev="isDisabledPrev"
-      :isDisabledNext="isDisabledNext"
-      @handleClick="queryPosts"
-    />
   </div>
 </template>
 
@@ -65,6 +66,9 @@ export default {
       await this.$store.dispatch('queryFilterArchives', { type, filter })
       this.$scroll(0)
     }
+  },
+  beforeDestroy() {
+    this.$store.commit('resetFilterArchives')
   }
 }
 </script>

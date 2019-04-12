@@ -60,6 +60,9 @@ export default {
       await this.$store.dispatch('queryMood', { type })
       this.$scroll(0)
     }
+  },
+  beforeDestroy() {
+    this.$store.commit('resetMood')
   }
 }
 </script>
