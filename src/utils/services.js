@@ -2,8 +2,9 @@ import AV from 'leancloud-storage'
 import config from '../config'
 import documents from './documents'
 
-const GRAPHQL_URL = 'https://api.github.com/graphql'
-const GITHUB_API = 'https://api.github.com/repos'
+const BAST_URL = 'https://api.github.com'
+const GRAPHQL_URL = `${BAST_URL}/graphql`
+const GITHUB_API = `${BAST_URL}/repos`
 
 const { username, repository, token } = config
 const blog = `${GITHUB_API}/${username}/${repository}`
@@ -66,6 +67,19 @@ export const queryPosts = async ({ page = 1, pageSize = 10, filter = '' }) => {
 export const queryPost = async number => {
   try {
     const url = `${blog}/issues/${number}?${open}`
+    const response = await fetch(url)
+    checkStatus(response)
+    const data = await response.json()
+    return data
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+// 搜索文章
+export const searchPost = async keyword => {
+  try {
+    const url = `${BAST_URL}/search/issues?q=${keyword}+in:title+state:open+user:${username}+author:${username}&access_token=${access_token}`
     const response = await fetch(url)
     checkStatus(response)
     const data = await response.json()

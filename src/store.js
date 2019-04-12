@@ -11,6 +11,7 @@ import {
   queryTag,
   queryMood,
   queryPage,
+  searchPost,
   visitor
 } from './utils/services'
 import { formatPost, formatTime, formatPage } from './utils/format'
@@ -43,6 +44,7 @@ export default new Vuex.Store({
       list: []
     },
     recentPost: [],
+    searchPost: [],
     categories: [],
     tags: [],
     friend: [],
@@ -95,6 +97,11 @@ export default new Vuex.Store({
     // 设置近期文章
     setRecentPost(state, payload) {
       state.recentPost = payload
+    },
+    // 设置搜索文章
+    setSearchPost(state, payload) {
+      state.searchPost = payload
+      console.log('state.searchPost', state.searchPost)
     },
     // 设置当前文章
     setPost(state, payload) {
@@ -191,8 +198,6 @@ export default new Vuex.Store({
         page: queryPage,
         filter
       })
-
-      console.log('data!!', posts)
       commit('setLoading', false)
 
       if (posts.length === 0) return
@@ -261,6 +266,11 @@ export default new Vuex.Store({
       posts = await dispatch('queryHot', { posts })
       commit('setRecentPost', posts)
     },
+    // 搜索文章
+    async searchPost({ commit }, { keyword }) {
+      const data = await searchPost(keyword)
+      commit('setSearchPost', data.items)
+    },
     // 获取分类
     async queryCategory({ commit }) {
       const data = await queryCategory()
@@ -293,6 +303,7 @@ export default new Vuex.Store({
     archives: state => state.archives,
     filterArchives: state => state.filterArchives,
     recentPost: state => state.recentPost,
+    searchPost: state => state.searchPost,
     post: state => state.post,
     categories: state => state.categories,
     tags: state => state.tags,

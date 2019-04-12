@@ -6,7 +6,7 @@
           <svg-icon icon-class="github" />
         </a>
         <div class="search">
-          <input type="text" placeholder="Search or jump to..." />
+          <input v-model="keyword" type="text" placeholder="Search or jump to..." />
           <svg-icon icon-class="slash" />
         </div>
         <nav class="nav">
@@ -23,17 +23,48 @@
           <span class="dropdown-caret"></span>
         </div>
       </div>
+      <ul v-show="searchPost.length" class="search-result">
+        <li v-for="item in searchPost" :key="item.id">
+          <router-link :to="{ name: 'post', params: { number: item.number } }">
+            <svg-icon icon-class="repo" />
+            <span>{{ item.title }}</span>
+          </router-link>
+        </li>
+      </ul>
     </div>
   </header>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Header',
   data() {
     return {
       links: this.$config.links,
-      personal: this.$config.personal
+      personal: this.$config.personal,
+      keyword: '',
+      loading: false
+    }
+  },
+  computed: {
+    ...mapGetters(['searchPost'])
+  },
+  watch: {
+    keyword(val) {
+      this.handleSearchPost(val)
+    }
+  },
+  methods: {
+    async handleSearchPost(keyword) {
+      if (this.loading || !keyword) return
+      this.loading = true
+      // 2s 后解除 loading
+      this.timer = setTimeout(() => {
+        this.loading = false
+      }, 2000)
+      await this.$store.dispatch('searchPost', { keyword })
     }
   }
 }
@@ -41,8 +72,49 @@ export default {
 
 <style lang="less" scoped>
 .header {
+  position: relative;
   font-size: 14px;
   background-color: #24292e;
+  .search-result {
+    position: absolute;
+    top: 46px;
+    width: 300px;
+    transform: translateX(48px);
+    background-color: #fff;
+    border: 1px solid #e1e4e8;
+    border-radius: 0 0 2px 2px;
+    transition: all 0.2s ease-in-out;
+    li {
+      cursor: pointer;
+      padding-left: 10px;
+      color: #1b1f23;
+      height: 46px;
+      line-height: 46px;
+      border-bottom: 1px solid #e1e4e8;
+      transition: all 0.2s ease-in-out;
+      &:last-child {
+        border-block-end: none;
+      }
+      &:hover {
+        color: #fff;
+        background-color: #0366d6;
+        a,
+        svg {
+          color: #fff;
+        }
+      }
+      svg {
+        margin-right: 10px;
+        font-size: 16px;
+        color: #666;
+        transform: translateY(1px);
+      }
+      a {
+        color: #1b1f23;
+        text-decoration: none;
+      }
+    }
+  }
   .main {
     display: flex;
     justify-content: space-between;
@@ -71,8 +143,8 @@ export default {
         position: relative;
         margin-right: 16px;
         width: 300px;
-        height: 28px;
         border-radius: 3px;
+        overflow: hidden;
         background-color: hsla(0, 0%, 100%, 0.125);
 
         input {
@@ -83,6 +155,11 @@ export default {
           border: none;
           outline: none;
           background-color: transparent;
+          &:focus {
+            line-height: 32px;
+            color: #24292e;
+            background-color: rgb(250, 251, 252);
+          }
         }
         svg {
           position: absolute;
