@@ -40,7 +40,11 @@ export default {
     ...mapGetters(['loading', 'mood', 'moodCount']),
     currentCount() {
       let count = 0
-      this.mood.list.forEach(o => (count += o.length))
+      this.mood.list.forEach((o, i) => {
+        if (i <= this.mood.page) {
+          count += o.length
+        }
+      })
       return count
     },
     isDisabledPrev() {

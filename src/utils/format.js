@@ -19,11 +19,11 @@ export const formatPost = post => {
 }
 
 /**
- * 格式化心情
+ * 格式化时间
  */
-export const formatMood = moods => {
-  moods.forEach(o => (o.created_at = format(o.created_at, 'zh_CN')))
-  return moods
+export const formatTime = list => {
+  list.forEach(o => (o.created_at = format(o.created_at, 'zh_CN')))
+  return list
 }
 
 /**

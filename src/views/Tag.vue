@@ -1,26 +1,76 @@
 <template>
   <div id="tag">
-    <ul>
-      <li v-for="item in tags" :key="item.id">
+    <ul class="tags">
+      <li v-for="item in tags" :key="item.id" @click="handleFilter(item.name)">
         <span>{{ item.name }}</span>
       </li>
     </ul>
+    <ArchiveList :archives="filterArchives.posts" />
+    <Pagination
+      v-if="filterArchives.posts.length"
+      :loading="loading"
+      :isDisabledPrev="isDisabledPrev"
+      :isDisabledNext="isDisabledNext"
+      @handleClick="queryPosts"
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import ArchiveList from '@/components/ArchiveList'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'Tag',
+  components: {
+    ArchiveList,
+    Pagination
+  },
+  data() {
+    return {
+      label: ''
+    }
+  },
   computed: {
-    ...mapGetters(['tags'])
+    ...mapGetters(['loading', 'tags', 'filterArchives', 'filterArchivesCount']),
+    currentCount() {
+      let count = 0
+      this.filterArchives.list.forEach((o, i) => {
+        if (i <= this.filterArchives.page) {
+          count += o.length
+        }
+      })
+      return count
+    },
+    isDisabledPrev() {
+      return this.filterArchives.page <= 1
+    },
+    isDisabledNext() {
+      return this.currentCount >= this.filterArchivesCount
+    }
+  },
+  methods: {
+    // 筛选文章
+    async handleFilter(label) {
+      if (label !== this.label) {
+        this.label = label
+        await this.$store.dispatch('queryFilterArchivesCount', { label })
+      }
+      this.queryPosts()
+    },
+    // 获取文章列表
+    async queryPosts(type = 'next') {
+      const filter = `&labels=${this.label}`
+      await this.$store.dispatch('queryFilterArchives', { type, filter })
+      this.$scroll(0)
+    }
   }
 }
 </script>
 <style lang="less" scoped>
 #tag {
-  ul {
+  .tags {
     display: flex;
     flex-wrap: wrap;
     margin-top: 16px;
