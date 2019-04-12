@@ -46,7 +46,6 @@ export default {
     },
     // 加载 Gitalk
     renderGitalk() {
-      console.log('renderGitalk path', this.path, this.$config.gitalk, this.title)
       const gitalk = new Gitalk({
         ...this.$config.gitalk,
         id: this.path, // gitalk 唯一标识
