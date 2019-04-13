@@ -186,5 +186,21 @@ export default {
       }
     }
   }
+
+  @media (max-width: 1012px) {
+    margin-top: 0;
+    .ghchart {
+      .graph {
+        padding: 8px 0 4px;
+        img {
+          width: 96%;
+        }
+        .contrib-footer {
+          margin: 6px 10px 0;
+          padding: 0 0 4px;
+        }
+      }
+    }
+  }
 }
 </style>

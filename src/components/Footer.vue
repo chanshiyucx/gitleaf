@@ -7,9 +7,6 @@
           <a :href="item.link">{{ item.name }}</a>
         </li>
       </ul>
-      <a href="#">
-        <svg-icon class="icon-github" icon-class="github" />
-      </a>
       <div>
         Theme
         <a class="theme" href="https://github.com/chanshiyucx/gitlife">Gitlife</a> by
@@ -17,11 +14,15 @@
         <span>❤</span> Powered by Github
       </div>
     </div>
+    <a class="github-icon" href="#">
+      <svg-icon class="icon-github" icon-class="github" />
+    </a>
   </footer>
 </template>
 
 <style lang="less" scoped>
 .footer {
+  position: relative;
   margin: 0 auto;
   padding: 0 16px;
   max-width: 1012px;
@@ -34,6 +35,7 @@
     padding-top: 40px;
     padding-bottom: 48px;
     border-top: 1px solid #e1e4e8;
+    line-height: 1.6;
     a {
       color: #0366d6;
       text-decoration: none;
@@ -57,6 +59,25 @@
   .theme,
   .author {
     margin: 0 4px;
+  }
+  .github-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -65%);
+    svg {
+      font-size: 24px;
+      color: #c6cbd1;
+    }
+  }
+  @media (max-width: 1012px) {
+    .wrapper {
+      flex-direction: column;
+      width: 100%;
+    }
+    .github-icon {
+      top: 20%;
+    }
   }
 }
 </style>

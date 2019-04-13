@@ -90,6 +90,7 @@ export default {
   position: relative;
   font-size: 14px;
   background-color: #24292e;
+  z-index: 999;
   .search-result {
     position: absolute;
     top: 46px;
@@ -97,8 +98,9 @@ export default {
     transform: translateX(48px);
     background-color: #fff;
     border: 1px solid #e1e4e8;
-    border-radius: 0 0 2px 2px;
+    border-radius: 0 0 3px 3px;
     transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     li {
       cursor: pointer;
       padding: 0 10px;

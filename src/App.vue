@@ -3,7 +3,7 @@
     <vue-progress-bar></vue-progress-bar>
     <Header />
     <div :class="['content', !isPostPage && 'shrink-content']">
-      <Sidebar v-if="!isPostPage" />
+      <Sidebar class="sidebar" v-if="!isPostPage" />
       <div class="body">
         <nav v-if="!isPostPage" class="nav">
           <router-link to="/">Overview</router-link>
@@ -117,6 +117,7 @@ export default {
 </script>
 <style lang="less" scoped>
 #app {
+  overflow: hidden;
   .content {
     margin: 0 auto;
     display: flex;
@@ -166,6 +167,17 @@ export default {
           border-radius: 20px;
           background-color: rgba(27, 31, 35, 0.08);
         }
+      }
+    }
+  }
+  @media (max-width: 1012px) {
+    .sidebar {
+      display: none;
+    }
+    .body {
+      width: 100%;
+      .nav {
+        display: none;
       }
     }
   }
