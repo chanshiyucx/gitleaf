@@ -1,6 +1,6 @@
 module.exports = {
   productionSourceMap: false,
-  publicPath: process.env.NODE_ENV === 'production' ? '/treasure/gitLife' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/treasure/gitleaf' : '/',
   chainWebpack: config => {
     // svg rule loader
     const svgRule = config.module.rule('svg')
