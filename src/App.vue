@@ -85,11 +85,13 @@ export default {
     // 初始化全局数据
     init() {
       this.$store.dispatch('queryRecentPost')
-      this.$store.dispatch('queryCategory')
-      this.$store.dispatch('queryTag')
-      this.$store.dispatch('queryPage', { type: 'friend' })
-      this.$store.dispatch('queryArchivesCount')
-      this.$store.dispatch('queryMoodCount')
+      if (!this.$isMobile) {
+        this.$store.dispatch('queryCategory')
+        this.$store.dispatch('queryTag')
+        this.$store.dispatch('queryPage', { type: 'friend' })
+        this.$store.dispatch('queryArchivesCount')
+        this.$store.dispatch('queryMoodCount')
+      }
 
       // 统计访客来源
       const referrer = getLocation(document.referrer)
