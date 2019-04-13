@@ -2,11 +2,17 @@
   <header class="header">
     <div class="main">
       <div class="pull-left">
-        <a class="home-link" href="/">
+        <router-link class="home-link" to="/">
           <svg-icon icon-class="github" />
-        </a>
+        </router-link>
         <div class="search">
-          <input v-model="keyword" type="text" placeholder="Search or jump to..." />
+          <input
+            v-model="keyword"
+            type="text"
+            placeholder="Search or jump to..."
+            @focus="showSearch = true"
+            @blur="searchBlur"
+          />
           <svg-icon icon-class="slash" />
         </div>
         <nav class="nav">
@@ -23,11 +29,14 @@
           <span class="dropdown-caret"></span>
         </div>
       </div>
-      <ul v-show="searchPost.length" class="search-result">
+      <ul v-show="searchPost.length && showSearch" class="search-result">
         <li v-for="item in searchPost" :key="item.id">
           <router-link :to="{ name: 'post', params: { number: item.number } }">
-            <svg-icon icon-class="repo" />
-            <span>{{ item.title }}</span>
+            <div class="title">
+              <svg-icon icon-class="repo" />
+              <span>{{ item.title }}</span>
+            </div>
+            <span class="jump">Jump to ↵</span>
           </router-link>
         </li>
       </ul>
@@ -45,7 +54,8 @@ export default {
       links: this.$config.links,
       personal: this.$config.personal,
       keyword: '',
-      loading: false
+      loading: false,
+      showSearch: false
     }
   },
   computed: {
@@ -65,6 +75,11 @@ export default {
         this.loading = false
       }, 2000)
       await this.$store.dispatch('searchPost', { keyword })
+    },
+    searchBlur() {
+      setTimeout(() => {
+        this.showSearch = false
+      }, 500)
     }
   }
 }
@@ -86,7 +101,7 @@ export default {
     transition: all 0.2s ease-in-out;
     li {
       cursor: pointer;
-      padding-left: 10px;
+      padding: 0 10px;
       color: #1b1f23;
       height: 46px;
       line-height: 46px;
@@ -112,6 +127,40 @@ export default {
       a {
         color: #1b1f23;
         text-decoration: none;
+        display: inline-block;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        &:hover {
+          .jump {
+            display: block;
+          }
+        }
+        .title {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          width: 200px;
+          span {
+            height: 46px;
+            line-height: 46px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+          }
+        }
+        .jump {
+          display: none;
+          padding: 0 4px;
+          font-size: 12px;
+          color: #6a737d;
+          line-height: 22px;
+          border: 1px solid #e1e4e8;
+          border-radius: 3px;
+          background-color: #f6f8fa;
+        }
       }
     }
   }

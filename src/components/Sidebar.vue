@@ -23,13 +23,23 @@
       </li>
       <li>
         <svg-icon icon-class="email" />
-        <a class="u-email" :href="`mailto:${personal.email}`">me@chanshiyu.com</a>
+        <a class="u-email" :href="`mailto:${personal.email}`">{{ personal.email }}</a>
       </li>
       <li>
         <svg-icon icon-class="link" />
         <a rel="nofollow me" :href="personal.site">{{ personal.site }}</a>
       </li>
     </ul>
+    <div class="social-wrapper">
+      <h3>Social Media</h3>
+      <ul>
+        <li v-for="(item, i) in personal.social" :key="i">
+          <a :key="i" :href="item.link" target="_blank">
+            <img alt :src="item.icon" />
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -111,7 +121,9 @@ export default {
   }
   .details-wrapper {
     margin-top: 16px;
+    padding-bottom: 16px;
     font-size: 14px;
+    border-bottom: 1px solid #e1e4e8;
     li {
       position: relative;
       padding-left: 22px;
@@ -130,6 +142,39 @@ export default {
       text-decoration: none;
       &:hover {
         text-decoration: underline;
+      }
+    }
+  }
+  .social-wrapper {
+    margin-top: 16px;
+    h3 {
+      padding-bottom: 10px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+      li {
+        margin-right: 5px;
+        margin-bottom: 10px;
+        text-align: center;
+        border-radius: 3px;
+        background: #f0f0f0;
+        a {
+          display: inline-block;
+          width: 35px;
+          height: 35px;
+          line-height: 35px;
+          img {
+            display: inline-block;
+            margin-top: 7px;
+            width: 22px;
+            height: 22px;
+          }
+        }
       }
     }
   }

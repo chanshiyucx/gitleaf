@@ -14,7 +14,7 @@ import {
   searchPost,
   visitor
 } from './utils/services'
-import { formatPost, formatTime, formatPage } from './utils/format'
+import { formatPost, formatTime, formatCategory, formatPage } from './utils/format'
 
 Vue.use(Vuex)
 
@@ -61,7 +61,6 @@ export default new Vuex.Store({
     },
     // 筛选文章数量
     setFilterArchivesCount(state, payload) {
-      state.commit('resetFilterArchives')
       state.filterArchivesCount = payload
     },
     // 设置心情数量
@@ -101,7 +100,6 @@ export default new Vuex.Store({
     // 设置搜索文章
     setSearchPost(state, payload) {
       state.searchPost = payload
-      console.log('state.searchPost', state.searchPost)
     },
     // 设置当前文章
     setPost(state, payload) {
@@ -141,6 +139,7 @@ export default new Vuex.Store({
     async queryFilterArchivesCount({ commit }, payload) {
       const data = await queryFilterArchivesCount(payload)
       const count = data.search.issueCount
+      commit('resetFilterArchives')
       commit('setFilterArchivesCount', count)
     },
     // 获取心情总数
@@ -273,7 +272,8 @@ export default new Vuex.Store({
     },
     // 获取分类
     async queryCategory({ commit }) {
-      const data = await queryCategory()
+      let data = await queryCategory()
+      data = formatCategory(data)
       commit('setCategories', data)
     },
     // 获取标签

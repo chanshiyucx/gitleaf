@@ -76,7 +76,25 @@ export default {
     description: 'Write the code, Change the world',
     location: 'Shenzhen, China',
     email: 'me@chanshiyu.com',
-    site: 'https://chanshiyu.com'
+    site: 'https://chanshiyu.com',
+    social: [
+      {
+        icon: 'https://i.loli.net/2019/01/25/5c4b2982b5687.png',
+        link: 'https://github.com/chanshiyucx'
+      },
+      {
+        icon: 'https://i.loli.net/2018/12/09/5c0cc518dc4f4.png',
+        link: 'https://www.zhihu.com/people/ichanshiyu/activities'
+      },
+      {
+        icon: 'https://i.loli.net/2018/12/09/5c0cc51ae4f0c.png',
+        link: 'https://music.163.com/#/user/home?id=103060582'
+      },
+      {
+        icon: 'https://i.loli.net/2019/01/25/5c4b2a7558ad7.png',
+        link: 'http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=tNnR9Nfc1drH3N3NwZrX29k'
+      }
+    ]
   },
 
   /**

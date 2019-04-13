@@ -27,6 +27,19 @@ export const formatTime = list => {
 }
 
 /**
+ * 格式化分类
+ */
+export const formatCategory = category => {
+  category.forEach(o => {
+    const desc = o.description.split('\r\n')
+    o.summary = desc[0].split('summary:')[1]
+    o.cover = desc[1].split('cover:')[1]
+    o.created_at = format(o.created_at, 'zh_CN')
+  })
+  return category
+}
+
+/**
  * 格式化书单 & 友链 & 关于
  */
 export const formatPage = (data, type) => {
