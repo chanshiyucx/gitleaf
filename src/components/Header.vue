@@ -13,7 +13,7 @@
             @focus="showSearch = true"
             @blur="searchBlur"
           />
-          <svg-icon icon-class="slash" />
+          <svg-icon v-show="!showSearch" icon-class="slash" />
         </div>
         <nav class="nav">
           <a v-for="item in links" :key="item.name" :href="item.url" target="_blank">{{ item.name }}</a>
@@ -79,7 +79,7 @@ export default {
     searchBlur() {
       setTimeout(() => {
         this.showSearch = false
-      }, 500)
+      }, 100)
     }
   }
 }

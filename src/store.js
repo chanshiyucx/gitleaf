@@ -7,6 +7,7 @@ import {
   queryPosts,
   queryPost,
   queryHot,
+  queryStar,
   queryCategory,
   queryTag,
   queryMood,
@@ -103,7 +104,7 @@ export default new Vuex.Store({
     },
     // 设置当前文章
     setPost(state, payload) {
-      state.post = payload
+      state.post = { ...payload }
     },
     // 设置分类
     setCategories(state, payload) {
@@ -248,6 +249,8 @@ export default new Vuex.Store({
     async queryPost({ dispatch, commit }, { number }) {
       let post = await queryPost(number)
       post = formatPost(post)
+      commit('setPost', post)
+      post.star = await queryStar({ id: post.id })
       let posts = await dispatch('queryHot', { posts: [post], isAdd: true })
       commit('setPost', posts[0])
     },
@@ -289,6 +292,12 @@ export default new Vuex.Store({
       let data = await queryPage(type)
       data = formatPage(data, type)
       commit('setPage', { type, data })
+    },
+    // 文章 Star
+    async postStar({ state, commit }, { isAdd }) {
+      const { post } = state
+      post.star = await queryStar({ id: post.id, isAdd, star: post.star })
+      commit('setPost', post)
     },
     // 统计访问来源
     async visitorStatistics(context, payload) {

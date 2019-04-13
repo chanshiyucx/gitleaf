@@ -3,21 +3,17 @@
     <div class="wrapper">
       <ul>
         <li>© 2019 Chanshiyu.</li>
-        <li>
-          <a href="#">Home</a>
-        </li>
-        <li>
-          <a href>Github</a>
-        </li>
-        <li>
-          <a href>Zhihu</a>
+        <li v-for="item in $config.personal.footer" :key="item.name">
+          <a :href="item.link">{{ item.name }}</a>
         </li>
       </ul>
       <a href="#">
         <svg-icon class="icon-github" icon-class="github" />
       </a>
       <div>
-        Theme Gitlife by Chanshiyu
+        Theme
+        <a class="theme" href="https://github.com/chanshiyucx/gitlife">Gitlife</a> by
+        <a class="author" href="https://chanshiyu.com">Chanshiyu</a>
         <span>❤</span> Powered by Github
       </div>
     </div>
@@ -57,6 +53,10 @@
       font-size: 24px;
       color: #c6cbd1;
     }
+  }
+  .theme,
+  .author {
+    margin: 0 4px;
   }
 }
 </style>

@@ -194,6 +194,53 @@ export const queryHot = async (postList, isAdd) => {
   }).catch(console.error)
 }
 
+// 文章 Star
+export const queryStar = async ({ id, isAdd, star }) => {
+  return new Promise(resolve => {
+    if (isDev) return resolve()
+    const query = new AV.Query('Star')
+    const Star = AV.Object.extend('Star')
+    query.equalTo('id', id)
+    query
+      .first()
+      .then(res => {
+        if (res) {
+          if (isAdd === true) {
+            res
+              .increment('time', 1)
+              .save(null, { fetchWhenSave: true })
+              .then(counter => {
+                console.log(counter.get('time'))
+                resolve(counter.get('time'))
+              })
+              .catch(console.error)
+          } else if (isAdd === false) {
+            res
+              .set('time', star - 1)
+              .save(null, { fetchWhenSave: true })
+              .then(counter => {
+                console.log(counter.get('time'))
+                resolve(counter.get('time'))
+              })
+              .catch(console.error)
+          } else {
+            resolve(res.get('time'))
+          }
+        } else {
+          // 不存在则新建
+          const newStar = new Star()
+          newStar.set('id', id)
+          newStar.set('time', 0)
+          newStar
+            .save()
+            .then(() => resolve(0))
+            .catch(console.error)
+        }
+      })
+      .catch(console.error)
+  }).catch(console.error)
+}
+
 // 访问来源
 export const visitor = async referrer => {
   return new Promise(resolve => {

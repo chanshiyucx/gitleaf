@@ -22,7 +22,7 @@
                 <svg-icon icon-class="octiconStar" />
                 <span>{{ isStar ? 'Unstar' : 'Star' }}</span>
               </button>
-              <span class="count">7</span>
+              <span class="count">{{ postStar || post.star || 0 }}</span>
             </li>
           </ul>
         </div>
@@ -53,7 +53,10 @@
     <main>
       <div class="main-inner">
         <div class="header">
-          <span>{{ post.user ? post.user.login : '' }}</span>
+          <span class="author">
+            <img src="@/assets/img/avatar.png" alt />
+            {{ post.user ? post.user.login : '' }}
+          </span>
           <span>{{ post.created_at }}</span>
         </div>
         <article>
@@ -80,19 +83,22 @@ export default {
   data() {
     const star = localRead('star') ? JSON.parse(localRead('star')) : {}
     return {
-      star
+      star,
+      postStar: 0
     }
   },
   computed: {
     ...mapGetters(['post']),
     isStar() {
-      return this.star[this.post.number]
+      return this.star[this.post.id]
     }
   },
   methods: {
-    toggleStar() {
-      this.star[this.post.number] = !this.star[this.post.number]
+    async toggleStar() {
+      this.star[this.post.id] = !this.star[this.post.id]
       localSave('star', JSON.stringify(this.star))
+
+      this.$store.dispatch('postStar', { isAdd: this.star[this.post.id] })
     }
   }
 }
@@ -242,8 +248,20 @@ export default {
         border-top-right-radius: 3px;
         font-size: 14px;
         line-height: 2;
+        .author {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+        }
         span {
           display: inline-block;
+        }
+        img {
+          margin-right: 5px;
+          width: 20px;
+          height: 20px;
+          border-radius: 3px;
+          transform: translateY(1px);
         }
       }
       article {

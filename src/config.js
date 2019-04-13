@@ -89,10 +89,20 @@ export default {
       {
         icon: 'https://i.loli.net/2018/12/09/5c0cc51ae4f0c.png',
         link: 'https://music.163.com/#/user/home?id=103060582'
+      }
+    ],
+    footer: [
+      {
+        name: 'Home',
+        link: 'https://chanshiyu.com'
       },
       {
-        icon: 'https://i.loli.net/2019/01/25/5c4b2a7558ad7.png',
-        link: 'http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=tNnR9Nfc1drH3N3NwZrX29k'
+        name: 'Github',
+        link: 'https://github.com/chanshiyucx'
+      },
+      {
+        name: 'Zhihu',
+        link: 'https://www.zhihu.com/people/ichanshiyu/activities'
       }
     ]
   },
