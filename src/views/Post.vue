@@ -269,5 +269,25 @@ export default {
       }
     }
   }
+  @media (max-width: 1012px) {
+    .header .header-inner {
+      .posthead {
+        flex-direction: column;
+        align-items: flex-start;
+        .title {
+          margin-bottom: 10px;
+        }
+        ul li:first-child {
+          margin-left: 0;
+        }
+      }
+      .tabs {
+        display: none;
+      }
+    }
+    main .main-inner article {
+      padding: 12px;
+    }
+  }
 }
 </style>

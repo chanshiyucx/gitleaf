@@ -57,10 +57,7 @@ export default {
     }
   },
   created() {
-    if (!this.$isMobile) {
-      // 顶部进度条
-      this.initProgress()
-    }
+    this.initProgress()
     this.init()
   },
   mounted() {

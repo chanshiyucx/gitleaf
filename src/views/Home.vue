@@ -189,6 +189,12 @@ export default {
 
   @media (max-width: 1012px) {
     margin-top: 0;
+    h2 {
+      display: none;
+    }
+    ul {
+      justify-content: center;
+    }
     .ghchart {
       .graph {
         padding: 8px 0 4px;
