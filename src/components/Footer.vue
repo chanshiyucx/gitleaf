@@ -9,7 +9,7 @@
       </ul>
       <div>
         Theme
-        <a class="theme" href="https://github.com/chanshiyucx/gitlife">Gitlife</a> by
+        <a class="theme" href="https://github.com/chanshiyucx/gitleaf">Gitleaf</a> by
         <a class="author" href="https://chanshiyu.com">Chanshiyu</a>
         <span>❤</span> Powered by Github
       </div>
