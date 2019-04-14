@@ -1,5 +1,7 @@
 module.exports = {
   productionSourceMap: false,
+  // publicPath 注意修改为自己的根目录，如果直接用 username.github.io 域名则设置为 '/'
+  // publicPath: '/'
   publicPath: process.env.NODE_ENV === 'production' ? '/treasure/gitleaf' : '/',
   chainWebpack: config => {
     // svg rule loader
